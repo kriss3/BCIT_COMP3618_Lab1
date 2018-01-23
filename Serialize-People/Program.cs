@@ -32,7 +32,7 @@ namespace Serialize_People
 
                     DateTime dob = new DateTime(Int32.Parse(args[1]), Int32.Parse(args[2]), Int32.Parse(args[3]));
                     Person p = new Person(args[0], dob);
-                    Console.WriteLine(p.ToString());
+                    WriteLine(p.ToString());
 
                     Serialize(p);
                 }
@@ -45,35 +45,32 @@ namespace Serialize_People
 
         private static void DisplayUsageInformation(string message)
         {
-            Console.WriteLine("\nERROR: Invalid parameters. " + message);
-            Console.WriteLine("\nSerialize_People \"Name\" Year Month Date");
-            Console.WriteLine("\nFor example:\nSerialize_People \"Tony\" 1922 11 22");
-            Console.WriteLine("\nOr, run the command with no arguments to display that previous person.");
+            WriteLine("\nERROR: Invalid parameters. " + message);
+            WriteLine("\nSerialize_People \"Name\" Year Month Date");
+            WriteLine("\nFor example:\nSerialize_People \"Tony\" 1922 11 22");
+            WriteLine("\nOr, run the command with no arguments to display that previous person.");
         }
 
         private static void Serialize(Person sp)
         {
-            // TODO: Serialize sp object
-            // Create file to save the data to
-            FileStream fs = new FileStream("Person.Dat", FileMode.Create);
-
-            // Create a BinaryFormatter object to perform the serialization
-            BinaryFormatter bf = new BinaryFormatter();
-
-            // Use the BinaryFormatter object to serialize the data to the file
-            bf.Serialize(fs, sp);
-
-            // Close the file
-            fs.Close();
-
+            using (FileStream fs = new FileStream("Person.Dat", FileMode.Create))
+            {
+                // Create an instance of BinaryFormatter
+                BinaryFormatter bf = new BinaryFormatter();
+                // Serialize the data to the file
+                bf.Serialize(fs, sp);
+            }
         }
 
         private static Person Deserialize()
         {
             Person dsp = new Person();
 
-            // TODO: Restore previously serialized Person object
-
+            using (FileStream fs = new FileStream("Person.Dat", FileMode.Open))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                dsp = (Person)bf.Deserialize(fs);
+            }
             return dsp;
         }
     }
