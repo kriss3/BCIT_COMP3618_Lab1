@@ -1,16 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using static System.Console;
 
 namespace Serialize_People
 {
-    // A simple program that accepts a name, year, month date,
-    // creates a Person object from that information, 
-    // and then displays that person's age on the console.
+    /// <summary>
+    /// Krzysztof Szczurowski;
+    /// BCIT COMP3608 Lab 1;
+    /// Repo: https://github.com/kriss3/BCIT_COMP3618_Lab1.git
+    /// Simple program that accepts a name, year, month date,
+    /// creates a Person object from that information, 
+    /// and then displays that person's age on the console.
+    /// </summary>
     class Program
     {
         static void Main(string[] args)
@@ -18,8 +20,15 @@ namespace Serialize_People
             if (args.Length == 0)
             {
                 // If they provide no arguments, display the last person
-                Person p = Deserialize();
-                WriteLine(p.ToString());
+                try
+                {
+                    Person p = Deserialize();
+                    WriteLine(p.ToString());
+                }
+                catch (FileNotFoundException fEx)
+                {
+                    WriteLine($"ERROR. Your are trying to deserialize non-existing file. Error: {fEx.Message}");
+                }
             }
             else
             {
@@ -53,7 +62,7 @@ namespace Serialize_People
 
         private static void Serialize(Person sp)
         {
-            using (FileStream fs = new FileStream("Person.Dat", FileMode.Create))
+            using (FileStream fs = new FileStream("Person.dat", FileMode.Create))
             {
                 // Create an instance of BinaryFormatter
                 BinaryFormatter bf = new BinaryFormatter();
@@ -66,7 +75,7 @@ namespace Serialize_People
         {
             Person dsp = new Person();
 
-            using (FileStream fs = new FileStream("Person.Dat", FileMode.Open))
+            using (FileStream fs = new FileStream("Person.dat", FileMode.Open))
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 dsp = (Person)bf.Deserialize(fs);

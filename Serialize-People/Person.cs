@@ -1,12 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.Serialization;
 
 namespace Serialize_People
 {
+    /// <summary>
+    /// Krzysztof Szczurowski
+    /// BCIT COMP3618 Lab 1;
+    /// Class Person to represent objects of type person;
+    /// </summary>
     [Serializable]
-    class Person : IDeserializationCallback
+    public class Person : IDeserializationCallback
     {
         public string name;
         public DateTime dateOfBirth;
@@ -26,7 +29,7 @@ namespace Serialize_People
 
         public override string ToString()
         {
-            return name + " was born on " + dateOfBirth.ToShortDateString() + " and is " + age.ToString() + " years old.";
+            return $"{name} was born on {dateOfBirth.ToShortDateString()} and is {age.ToString()} years old.";
         }
 
         private void CalculateAge()
